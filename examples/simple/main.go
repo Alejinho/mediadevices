@@ -15,8 +15,8 @@ import (
 	// If you don't like vpx, you can also use x264 by importing as below
 	// "github.com/pion/mediadevices/pkg/codec/x264" // This is required to use h264 video encoder
 	// or you can also use openh264 for alternative h264 implementation
-	// "github.com/pion/mediadevices/pkg/codec/openh264"
-	"github.com/pion/mediadevices/pkg/codec/vpx" // This is required to use VP8/VP9 video encoder
+	"github.com/pion/mediadevices/pkg/codec/openh264"
+	//"github.com/pion/mediadevices/pkg/codec/vpx" // This is required to use VP8/VP9 video encoder
 
 	// Note: If you don't have a camera or microphone or your adapters are not supported,
 	//       you can always swap your adapters with our dummy adapters below.
@@ -68,11 +68,11 @@ func main() {
 	}
 	opusParams.BitRate = 32000 // 32kbps
 
-	vp8Params, err := vpx.NewVP8Params()
+	h264Params, err := openh264.NewParams()
 	if err != nil {
 		panic(err)
 	}
-	vp8Params.BitRate = 100000 // 100kbps
+	h264Params.BitRate = 100000 // 100kbps
 
 	s, err := md.GetUserMedia(mediadevices.MediaStreamConstraints{
 		Audio: func(c *mediadevices.MediaTrackConstraints) {
@@ -84,7 +84,7 @@ func main() {
 			c.Enabled = true
 			c.Width = 640
 			c.Height = 480
-			c.VideoEncoderBuilders = []codec.VideoEncoderBuilder{&vp8Params}
+			c.VideoEncoderBuilders = []codec.VideoEncoderBuilder{&h264Params}
 		},
 	})
 	if err != nil {
